@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>hydra-element demo</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/hydra-element"></script>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+    </style>
+  </head>
+  <body>
+    <hydra-element>
+      voronoi().out()
+    </hydra-element>
+    <hydra-element audio="true">
+      osc().modulate(noise(3),() => a.fft[0]).out(o0)
+    </hydra-element>
+    <hydra-element global="true">
+      await loadScript("https://cdn.statically.io/gl/metagrowing/extra-shaders-for-hydra/main/lib/all.js")
+      warp().out()
+    </hydra-element>
+    <hydra-element>
+      setFunction({
+        name: 'noixe',
+        type: 'src',
+        inputs: [
+          { type: 'float', name: 'scale', default: 5 },
+          { type: 'float', name: 'offset', default: 0.5 }
+        ],
+        glsl: `return vec4(vec3(_noise(vec3(_st*scale, offset*time))), 0.5);`
+      })
+      let { noixe } = synth
+      noixe().out()
+    </hydra-element>
+  </body>
+</html>
