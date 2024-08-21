@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>hydra inside a webpage</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- import the latest version of hydra synth-->
+    <script src="https://unpkg.com/hydra-synth"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>hydra inside a webpage</h1>
+
+      <div class="spacer-small"></div>
+
+      <p>↓continue scrolling↓</p>
+      
+      <div class="spacer-small"></div>
+      
+      <code>shape(99).scale(1,1,()=>window.innerWidth/window.innerHeight).mult(osc(20,0.1,2)).modulateScale(osc(1,2).invert(),0.5,0.5).out()</code>
+
+      <div class="spacer"></div>
+
+      <code>solid(0,0,0).layer(src(o0).scale(1.01).mask(shape(99).scale(1,1,()=>window.innerWidth/window.innerHeight))).blend(shape(99).scale(1,1,()=>window.innerWidth/window.innerHeight).mult(osc(20,0.1,2)),0.1).out()</code>
+
+      <div class="spacer"></div>
+
+      <code>src(o0).modulateHue(src(o0).scale(1.01),1).out()</code>
+
+      <div class="spacer"></div>
+
+      <code>src(o0).scale(1.01).out()</code>
+
+      <div class="spacer"></div>
+
+      <code>src(o0).modulateRotate(src(o0).scale(1.01).hue(()=>time/9).brightness(-0.3),.01).out()</code>
+
+      <div class="spacer"></div>
+
+      <code>src(o0).modulatePixelate(src(o0).hue(()=>time/9).r().contrast(2).pixelate(32,32),1024,8).out()</code>
+
+      <div class="spacer"></div>
+
+      <code>src(o0).scale(0.99).out()</code>
+
+      <div class="spacer"></div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

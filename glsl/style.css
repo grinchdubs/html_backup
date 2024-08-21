@@ -1,0 +1,51 @@
+/* CSS files add styling rules to your content */
+@font-face {
+  font-family: "Roblox";
+  src: url(fonts/Roblox-Font-Regular.ttf) format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Roblox";
+  src: url(fonts/Roblox-Font-Bold.ttf) format("truetype");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Tag";
+  src: url(fonts/aAnotherTag.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Homenaje";
+  src: url(fonts/Homenaje-Regular.ttf) format("truetype");
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Silkscreen";
+  src: url(fonts/Silkscreen-Bold.ttf) format("truetype");
+  font-weight: normal;
+}
+
+body, html {
+  font-family: "Homenaje", sans-serif; 
+  margin: 10px;
+  background-color: #010101;
+  color: #00cccc;
+}
+
+h1 {
+  font-family: "Silkscreen", sans-serif;
+  color: #ff0066;
+}
+
+h2 {
+  font-family: "Silkscreen", sans-serif;
+  color: #6600ff;
+}
+
+button {
+  display: inline-block;
+  font-size: 16px;
+  padding: 10px;
+  margin: 10px;
+  font-family: "Roblox", sans-serif;
+}
+

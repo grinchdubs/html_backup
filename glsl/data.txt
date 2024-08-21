@@ -1,0 +1,65 @@
+ShaderPark Example - // licensed with CC BY-NC-SA 4.0 https://creativecommons.org/licenses/by-nc-sa/4.0/
+//const script by Torin Blankensmith - Example by Flor de Fuego
+const {
+	sculptToHydraRenderer
+} = await import("https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js")
+
+sculptToHydraRenderer(() => {
+		let spinningSphere = shape((x, theta) => {
+  rotateZ(theta);
+  displace(vec3(0.2 + x * nsin(time * 1.2), 0, 0));
+  color(vec3(theta / (2 * PI), ncos(time), nsin(time)));
+  sphere(0.2);
+});
+
+let sphereCount = 5;
+rotateZ(time);
+blend(0.5);
+for (let i = 0; i < sphereCount; ++i) {
+  spinningSphere(0.5, 2.0 * PI * i / sphereCount);
+}
+
+let scale = .5;
+let s = getSpace();
+let n = noise(scale * s * (time*.01));
+reset();
+displace(vec3(n, n, n));
+sphere(0.1);
+	})
+	.out(o0)
+
+src(o1)
+	.layer(src(o0)
+		.luma(0.5, 0)
+		.saturate(10)
+		.mult(osc(130, 0.1, [0,0,2].smooth())
+		.modulate(src(o0))))
+	.out(o1)
+
+render(o0)
+
+
+Green Scrolling Noise - let frag = src(o0)
+    .diff(osc(1,1,1))
+		.add(shape(6,.1,.2)
+             .repeat(3.0, 3.0, 0.5876, .678))
+        .modulatePixelate(noise(2,0.5),1,3)
+
+    .layer(shape(6,.1,1)
+        .repeat(3.0, 3.0, 0.5876, .678)
+        .scrollY(10, .21)
+        .luma(.2)
+        .modulateScale(
+        noise(10), 1)
+          )
+		.color(.357,.674,.564)
+		.scale(1,height/width)
+
+console.log(frag.scale(1,height/width).glsl()[0].frag)
+frag.scale(1,height/width).out(o0)
+
+
+ShaderPark Example Link - http://grnchserver:8000/?code=JTJGJTJGJTIwbGljZW5zZWQlMjB3aXRoJTIwQ0MlMjBCWS1OQy1TQSUyMDQuMCUyMGh0dHBzJTNBJTJGJTJGY3JlYXRpdmVjb21tb25zLm9yZyUyRmxpY2Vuc2VzJTJGYnktbmMtc2ElMkY0LjAlMkYlMEElMkYlMkZjb25zdCUyMHNjcmlwdCUyMGJ5JTIwVG9yaW4lMjBCbGFua2Vuc21pdGglMjAtJTIwRXhhbXBsZSUyMGJ5JTIwRmxvciUyMGRlJTIwRnVlZ28lMEFjb25zdCUyMCU3QiUwQSUwOXNjdWxwdFRvSHlkcmFSZW5kZXJlciUwQSU3RCUyMCUzRCUyMGF3YWl0JTIwaW1wb3J0KCUyMmh0dHBzJTNBJTJGJTJGdW5wa2cuY29tJTJGc2hhZGVyLXBhcmstY29yZSUyRmRpc3QlMkZzaGFkZXItcGFyay1jb3JlLmVzbS5qcyUyMiklMEElMEFzY3VscHRUb0h5ZHJhUmVuZGVyZXIoKCklMjAlM0QlM0UlMjAlN0IlMEElMDklMDlsZXQlMjBzcGlubmluZ1NwaGVyZSUyMCUzRCUyMHNoYXBlKCh4JTJDJTIwdGhldGEpJTIwJTNEJTNFJTIwJTdCJTBBJTIwJTIwcm90YXRlWih0aGV0YSklM0IlMEElMjAlMjBkaXNwbGFjZSh2ZWMzKDAuMiUyMCUyQiUyMHglMjAqJTIwbnNpbih0aW1lJTIwKiUyMDEuMiklMkMlMjAwJTJDJTIwMCkpJTNCJTBBJTIwJTIwY29sb3IodmVjMyh0aGV0YSUyMCUyRiUyMCgyJTIwKiUyMFBJKSUyQyUyMG5jb3ModGltZSklMkMlMjBuc2luKHRpbWUpKSklM0IlMEElMjAlMjBzcGhlcmUoMC4yKSUzQiUwQSU3RCklM0IlMEElMEFsZXQlMjBzcGhlcmVDb3VudCUyMCUzRCUyMDUlM0IlMEFyb3RhdGVaKHRpbWUpJTNCJTBBYmxlbmQoMC41KSUzQiUwQWZvciUyMChsZXQlMjBpJTIwJTNEJTIwMCUzQiUyMGklMjAlM0MlMjBzcGhlcmVDb3VudCUzQiUyMCUyQiUyQmkpJTIwJTdCJTIwJTBBJTIwJTIwc3Bpbm5pbmdTcGhlcmUoMC41JTJDJTIwMi4wJTIwKiUyMFBJJTIwKiUyMGklMjAlMkYlMjBzcGhlcmVDb3VudCklM0IlMEElN0QlMEElMEFsZXQlMjBzY2FsZSUyMCUzRCUyMC41JTNCJTBBbGV0JTIwcyUyMCUzRCUyMGdldFNwYWNlKCklM0IlMEFsZXQlMjBuJTIwJTNEJTIwbm9pc2Uoc2NhbGUlMjAqJTIwcyUyMColMjAodGltZSouMDEpKSUzQiUwQXJlc2V0KCklM0IlMEFkaXNwbGFjZSh2ZWMzKG4lMkMlMjBuJTJDJTIwbikpJTNCJTBBc3BoZXJlKDAuMSklM0IlMEElMDklN0QpJTBBJTA5Lm91dChvMCklMEElMEFzcmMobzEpJTBBJTA5LmxheWVyKHNyYyhvMCklMEElMDklMDkubHVtYSgwLjUlMkMlMjAwKSUwQSUwOSUwOS5zYXR1cmF0ZSgxMCklMEElMDklMDkubXVsdChvc2MoMTMwJTJDJTIwMC4xJTJDJTIwJTVCMCUyQzAlMkMyJTVELnNtb290aCgpKSUwQSUwOSUwOS5tb2R1bGF0ZShzcmMobzApKSkpJTBBJTA5Lm91dChvMSklMEElMEFyZW5kZXIobzApJTBB
+
+
+Green Scrolling Noise Link - http://grnchserver:8000/?code=JTJGJTJGJTIwbGljZW5zZWQlMjB3aXRoJTIwQ0MlMjBCWS1OQy1TQSUyMDQuMCUyMGh0dHBzJTNBJTJGJTJGY3JlYXRpdmVjb21tb25zLm9yZyUyRmxpY2Vuc2VzJTJGYnktbmMtc2ElMkY0LjAlMkYlMEFsZXQlMjBmcmFnJTIwJTNEJTIwc3JjKG8wKSUwQSUyMCUyMCUyMCUyMC5kaWZmKG9zYygxJTJDMSUyQzEpKSUwQSUwOSUwOS5hZGQoc2hhcGUoNiUyQy4xJTJDLjIpJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwLnJlcGVhdCgzLjAlMkMlMjAzLjAlMkMlMjAwLjU4NzYlMkMlMjAuNjc4KSklMEElMjAlMjAlMjAlMjAubGF5ZXIoc2hhcGUoNiUyQy4xJTJDMSklMEElMjAlMjAlMjAlMjAlMjAlMjAlMjAlMjAucmVwZWF0KDMuMCUyQyUyMDMuMCUyQyUyMDAuNTg3NiUyQyUyMC42NzgpJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwLnNjcm9sbFkoMTAlMkMlMjAuMjEpJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwLmx1bWEoLjIpJTBBJTIwJUMyJUEwJTIwJUMyJUEwJTIwJUMyJUEwJTIwJTIwLm1vZHVsYXRlU2NhbGUoJTBBJTIwJTIwJTIwJTIwJTIwJTIwJTIwJTIwbm9pc2UoMTApJTJDJTIwMSklMEElMjAlQzIlQTAlMjAlQzIlQTAlMjAlQzIlQTAlMjAlQzIlQTAlMjAlMjApJTBBJTA5JTA5LmNvbG9yKC4zNTclMkMuNjc0JTJDLjU2NCklMEElMDklMDkuc2NhbGUoMSUyQ2hlaWdodCUyRndpZHRoKSUwQSUwQWNvbnNvbGUubG9nKGZyYWcuc2NhbGUoMSUyQ2hlaWdodCUyRndpZHRoKS5nbHNsKCklNUIwJTVELmZyYWcpJTBBZnJhZy5zY2FsZSgxJTJDaGVpZ2h0JTJGd2lkdGgpLm91dChvMCklMEE%3D
